@@ -33,7 +33,7 @@ rank-bm25>=0.2.2
 faiss-cpu>=1.7.4
 psutil>=5.9.0
 tree-sitter>=0.20.0,<0.21
-markitdown>=0.1.2
+markitdown[pdf]>=0.1.2
 rich>=13.0.0
 packaging>=21.0
 
