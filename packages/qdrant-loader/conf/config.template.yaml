@@ -28,10 +28,10 @@
 # 5. Migration from Legacy Format:
 #    - Legacy single-project configurations are no longer supported
 #    - Convert by wrapping existing sources in a project structure
-#    - Move global settings to global_config section
+#    - Move global settings to global section
 
 # Global configuration shared across all projects
-global_config:
+global:
   # Qdrant vector database configuration
   qdrant:
     url: "http://localhost:6333"

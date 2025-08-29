@@ -112,7 +112,7 @@ Edit `config.yaml`:
 
 ```yaml
 # Global configuration
-global_config:
+global:
   chunking:
     chunk_size: 1500
     chunk_overlap: 200

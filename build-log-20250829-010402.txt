@@ -1,0 +1,99 @@
+=== QDRANT LOADER WINDOWS BUILD LOG ===
+Started: 2025-08-29 01:04:02.813879
+Python: 3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:08:16) [MSC v.1943 64 bit (AMD64)]
+Platform: win32
+Working Directory: C:\dev\qdrant-loader
+
+============================================================
+
+>>> Check Python Version
+Command: python --version
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'python' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+>>> Check Pip Version
+Command: pip --version
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'pip' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+>>> Install qdrant-loader package
+Command: pip install -e packages/qdrant-loader --verbose
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'pip' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+>>> Install qdrant-loader-mcp-server package
+Command: pip install -e packages/qdrant-loader-mcp-server --verbose
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'pip' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+>>> Test qdrant-loader import
+Command: python -c "import qdrant_loader; print('qdrant-loader imported successfully')"
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'python' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+>>> Test qdrant-loader-mcp-server import
+Command: python -c "import qdrant_loader_mcp_server; print('qdrant-loader-mcp-server imported successfully')"
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'python' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+>>> Run Windows compatibility validation
+Command: python validate-windows-fixes.py
+----------------------------------------
+Return Code: 1
+STDOUT:
+
+STDERR:
+'python' is not recognized as an internal or external command,
+operable program or batch file.
+
+============================================================
+
+
+============================================================
+BUILD SUMMARY
+============================================================
+qdrant-loader install: FAILED
+mcp-server install: FAILED
+Completed: 2025-08-29 01:04:02.968751

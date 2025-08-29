@@ -1,0 +1,23 @@
+# Dependency fixes for Windows compatibility
+# Issue: tree-sitter-languages>=1.10.0 has no wheels for certain Python versions
+# Fix: Use tree-sitter-languages==1.10.0 (exact version) or make it optional
+
+[qdrant-loader pyproject.toml fixes]
+Original dependency line 61:
+    "tree-sitter-languages>=1.10.0",
+
+Fix options:
+1. Use exact version:
+    "tree-sitter-languages==1.10.0",
+
+2. Make it optional with fallback:
+    "tree-sitter>=0.20.0,<0.21",
+    # Remove tree-sitter-languages entirely and implement fallback
+
+3. Add Windows-specific constraints:
+    "tree-sitter-languages>=1.10.0; platform_system!='Windows'",
+    "tree-sitter>=0.20.0,<0.21; platform_system=='Windows'",
+
+The recommended fix is option 3 - platform-specific dependencies that avoid
+the problematic tree-sitter-languages on Windows while keeping full
+functionality on other platforms.
