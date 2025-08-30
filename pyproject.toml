@@ -187,3 +187,34 @@ ignore = [
     "B011",
     "B017",
 ]
+
+[tool.nuitka]
+standalone = true
+onefile = true
+assume-yes-for-downloads = true
+show-memory = true
+show-progress = true
+remove-output = true
+windows-console-mode = "force"
+windows-company-name = "AeyeOps"
+windows-product-name = "Qdrant Loader Suite"
+include-packages = [
+    "qdrant_loader",
+    "qdrant_loader_mcp_server",
+    "openai",
+    "qdrant_client",
+    "tiktoken",
+    "langchain",
+    "pydantic",
+    "click",
+    "fastapi",
+]
+nofollow-import-to = [
+    "tkinter",
+    "test",
+    "unittest",
+    "pytest",
+    "matplotlib",
+    "IPython",
+    "jupyter",
+]
