@@ -1,4 +1,4 @@
-name: Documentation Website (Auto)
+name: Documentation Website (Auto) [DISABLED]
 
 on:
   push:

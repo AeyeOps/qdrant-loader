@@ -3,8 +3,6 @@
     "qdrant-loader-docs": {
       "command": "uvx",
       "args": [
-        "--python",
-        "3.12",
         "--from",
         "qdrant-loader-mcp-server",
         "mcp-qdrant-loader"
