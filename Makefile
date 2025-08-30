@@ -93,4 +93,34 @@ profile-cprofile:
 
 metrics:
 	@echo "Starting Prometheus metrics endpoint (to be implemented)"
-	# TODO: Implement metrics endpoint and start it here 
+	# TODO: Implement metrics endpoint and start it here
+
+build-nuitka-loader: ## Build standalone executable for qdrant-loader using Nuitka
+	@echo "Building qdrant-loader standalone executable with Nuitka..."
+	@uv run python -c "import nuitka" 2>/dev/null || (echo "Installing Nuitka..." && uv pip install nuitka)
+	cd packages/qdrant-loader && uv run python -m nuitka \
+		--standalone \
+		--onefile \
+		--windows-console-mode=attach \
+		--enable-plugin=no-qt \
+		--assume-yes-for-downloads \
+		--output-filename=qdrant-loader.exe \
+		--include-package=qdrant_loader \
+		--follow-imports \
+		src/qdrant_loader/main.py
+
+build-nuitka-mcp: ## Build standalone executable for MCP server using Nuitka
+	@echo "Building MCP server standalone executable with Nuitka..."
+	@uv run python -c "import nuitka" 2>/dev/null || (echo "Installing Nuitka..." && uv pip install nuitka)
+	cd packages/qdrant-loader-mcp-server && uv run python -m nuitka \
+		--standalone \
+		--onefile \
+		--windows-console-mode=attach \
+		--enable-plugin=no-qt \
+		--assume-yes-for-downloads \
+		--output-filename=mcp-qdrant-loader.exe \
+		--include-package=qdrant_loader_mcp_server \
+		--follow-imports \
+		src/qdrant_loader_mcp_server/main.py
+
+build-nuitka: build-nuitka-loader build-nuitka-mcp ## Build both standalone executables 

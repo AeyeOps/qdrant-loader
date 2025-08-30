@@ -10,7 +10,7 @@ name = "qdrant-loader-mcp-server"
 version = "0.6.1"
 description = "A Model Context Protocol (MCP) server that provides RAG capabilities to Cursor using Qdrant."
 readme = "README.md"
-requires-python = ">=3.12,<=3.13"
+requires-python = ">=3.12,<3.13"
 license = "GPL-3.0"
 keywords = [
     "qdrant",
@@ -33,7 +33,7 @@ dependencies = [
     "pydantic>=2.4.2",
     "python-dotenv>=1.0.0",
     "json-rpc>=1.15.0",
-    "httpx>=0.24.0; python_version>='3.13'",
+    "httpx>=0.24.0",
     "structlog>=23.0.0",
     "PyYAML>=6.0.0",
     "rank-bm25>=0.2.2",
@@ -50,7 +50,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Topic :: Database",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -68,7 +67,7 @@ Repository = "https://github.com/martin-papy/qdrant-loader"
 Issues = "https://github.com/martin-papy/qdrant-loader/issues"
 
 [project.scripts]
-mcp-qdrant-loader = "qdrant_loader_mcp_server.main:main"
+qdrant-loader-mcp-server = "qdrant_loader_mcp_server.main:main"
 
 [project.optional-dependencies]
 dev = [

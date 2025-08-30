@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(uv pip show:*)"
+      "Bash(uv pip show:*)",
+      "Bash(uv sync:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

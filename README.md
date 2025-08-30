@@ -196,8 +196,63 @@ curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/Mac
 # Or on Windows: winget install ezwinports.make
 
 # Install packages in development mode
-uv sync --all-extras --all-packages
+make install-dev  # or: uv sync --all-extras --all-packages
 ```
+
+### Common Development Commands
+
+#### Essential Commands (Most Used)
+```bash
+make install-dev      # Set up development environment with all dependencies
+make test            # Run all tests
+make format          # Auto-format code (black, isort, ruff)
+make lint            # Check code quality (ruff, mypy)
+make clean           # Remove all build artifacts and caches
+```
+
+#### Testing Commands
+```bash
+make test            # Run all tests for both packages
+make test-loader     # Test only the core qdrant-loader package
+make test-mcp        # Test only the MCP server package
+make test-coverage   # Generate HTML coverage report
+```
+
+#### Build & Release Commands
+```bash
+make build           # Build both packages for distribution
+make build-loader    # Build only qdrant-loader package
+make build-mcp       # Build only MCP server package
+make publish-loader  # Build and publish qdrant-loader to PyPI
+make publish-mcp     # Build and publish MCP server to PyPI
+```
+
+#### Advanced Commands (Rarely Needed)
+```bash
+make lock            # Update uv.lock file after changing dependencies
+make build-nuitka    # Create standalone Windows executables (experimental)
+make profile-pyspy   # Profile performance with py-spy
+make profile-cprofile # Profile with cProfile and SnakeViz
+```
+
+#### Command Categories Explained
+
+**Daily Development** - Use `install-dev`, `test`, `format`, `lint`
+- These are your bread and butter for active development
+- Run `format` before committing code
+- Run `test` after making changes
+
+**Dependency Management** - Use `lock` when updating pyproject.toml
+- Only needed when adding/removing/updating dependencies
+- The lock file ensures everyone gets the same versions
+
+**Publishing** - Use `build` and `publish-*` commands for releases
+- Maintainers only - requires PyPI credentials
+- Always test locally before publishing
+
+**Performance** - Use profiling commands when optimizing
+- Only when investigating performance issues
+- Generates visual flamegraphs and reports
 
 ## 📄 License
 

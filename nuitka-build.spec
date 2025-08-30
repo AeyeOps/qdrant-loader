@@ -7,7 +7,7 @@ output = "qdrant-loader.exe"
 output_mcp = "mcp-qdrant-loader.exe"
 
 # Python version requirement
-python_version = ">=3.12,<3.14"
+python_version = ">=3.12,<3.13"
 
 # Compilation mode
 mode = "standalone"
