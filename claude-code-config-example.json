@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "qdrant-loader-docs": {
+      "command": "uvx",
+      "args": [
+        "--python",
+        "3.12",
+        "--from",
+        "qdrant-loader-mcp-server",
+        "mcp-qdrant-loader"
+      ],
+      "env": {
+        "QDRANT_URL": "http://localhost:6333",
+        "QDRANT_COLLECTION": "docs",
+        "ENABLE_FILE_CONVERSION": "true",
+        "CHUNK_SIZE": "1024",
+        "OPENAI_API_KEY": "$OPENAI_API_KEY",
+        "TOOL_STORE_DESCRIPTION": "Store and index documentation, PDFs, Office files, and knowledge base articles automatically; 'information' is main text, 'metadata' is source/type/tags",
+        "TOOL_FIND_DESCRIPTION": "Semantic search across mixed document types including PDFs and Office formats"
+      }
+    }
+  }
+}

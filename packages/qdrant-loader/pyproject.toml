@@ -43,7 +43,8 @@ dependencies = [
     "langchain>=0.3.0",
     "langchain-core>=0.3.0",
     "langchain-community>=0.0.38",
-    "numpy>=1.26.0,<2.0.0",
+    "numpy>=1.26.0,<2.0.0; python_version<'3.13'",
+    "numpy>=2.1.0; python_version>='3.13'",
     "GitPython>=3.1.40",
     "atlassian-python-api>=3.41.0",
     "tqdm>=4.66.0",
@@ -55,6 +56,8 @@ dependencies = [
     "spacy>=3.7.0",
     "nltk>=3.8.0",
     "gensim>=4.3.0",
+    "scipy<1.13; python_version<'3.13'",  # gensim 4.3.x incompatible with scipy 1.13+ (triu moved to numpy)
+    "scipy>=1.13; python_version>='3.13'",
     "rank-bm25>=0.2.2",
     "faiss-cpu>=1.7.4; python_version<'3.13'",
     "hnswlib>=0.7.0; python_version>='3.13'",
@@ -62,7 +65,7 @@ dependencies = [
     "tree-sitter-languages>=1.10.0; platform_system!='Windows' and python_version<'3.13'",
     "tree-sitter>=0.20.0,<0.21",
     "markitdown>=0.1.2; python_version<'3.13'",
-    "python-markdown>=3.5.0; python_version>='3.13'",
+    "markdown>=3.5.0; python_version>='3.13'",
     "rich>=13.0.0",
     "packaging>=21.0",
     # Missing dependencies discovered during setup

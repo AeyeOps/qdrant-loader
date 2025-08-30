@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    tags: [ 'v*', 'qdrant-loader-*', 'qdrant-loader-mcp-server-*' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install UV
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      
+      - name: Install dependencies
+        run: uv sync
+      
+      - name: Build loader package
+        run: |
+          cd packages/qdrant-loader
+          uv run python -m build
+      
+      - name: Build MCP server package
+        run: |
+          cd packages/qdrant-loader-mcp-server
+          uv run python -m build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ github.run_id }}
+          path: packages/*/dist/
+          retention-days: 30
+      
+      - name: List built packages
+        run: |
+          echo "=== Built Packages ==="
+          ls -la packages/*/dist/

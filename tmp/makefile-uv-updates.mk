@@ -1,4 +1,7 @@
-.PHONY: help install install-dev test test-loader test-mcp test-coverage lint format clean build publish-loader publish-mcp docs
+# Updated Makefile targets for UV
+# Replace existing targets in Makefile with these
+
+.PHONY: help install install-dev test test-loader test-mcp test-coverage lint format clean build sync sync-dev lock
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -6,21 +9,24 @@ help: ## Show this help message
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-install: ## Install both packages in development mode
-	uv sync
-
-install-dev: ## Install both packages with development dependencies
-	uv sync --all-extras --all-packages
-
+# UV-based dependency management
 sync: ## Sync all dependencies from lock file
 	uv sync
 
 sync-dev: ## Sync with dev dependencies
-	uv sync --all-extras --all-packages
+	uv sync --all-extras
 
 lock: ## Update lock file
 	uv lock
 
+install: ## Install both packages in development mode
+	uv pip install -e packages/qdrant-loader
+	uv pip install -e packages/qdrant-loader-mcp-server
+
+install-dev: ## Install with all extras (preferred)
+	uv sync --all-extras
+
+# Testing with UV
 test: ## Run all tests
 	uv run pytest packages/
 
@@ -33,6 +39,7 @@ test-mcp: ## Run tests for mcp-server package only
 test-coverage: ## Run tests with coverage report
 	uv run pytest packages/ --cov=packages --cov-report=html --cov-report=term-missing
 
+# Linting and formatting with UV
 lint: ## Run linting on all packages
 	uv run ruff check packages/
 	uv run mypy packages/
@@ -42,18 +49,7 @@ format: ## Format code in all packages
 	uv run isort packages/
 	uv run ruff check --fix packages/
 
-clean: ## Clean build artifacts
-	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-	find . -type f -name "*.pyc" -delete 2>/dev/null || true
-	find . -type f -name "*.pyo" -delete 2>/dev/null || true
-	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
-	rm -rf packages/*/dist/
-	rm -rf packages/*/build/
-	rm -rf packages/*/src/*.egg-info/
-	rm -rf htmlcov/
-	rm -rf .coverage coverage.xml
-	rm -rf .pytest_cache/
-
+# Building with UV
 build: ## Build both packages
 	cd packages/qdrant-loader && uv run python -m build
 	cd packages/qdrant-loader-mcp-server && uv run python -m build
@@ -64,22 +60,34 @@ build-loader: ## Build qdrant-loader package only
 build-mcp: ## Build mcp-server package only
 	cd packages/qdrant-loader-mcp-server && uv run python -m build
 
+# Publishing (unchanged)
 publish-loader: build-loader ## Publish qdrant-loader to PyPI
 	cd packages/qdrant-loader && uv run python -m twine upload dist/*
 
 publish-mcp: build-mcp ## Publish mcp-server to PyPI
 	cd packages/qdrant-loader-mcp-server && uv run python -m twine upload dist/*
 
-docs: ## Generate documentation
-	@echo "Documentation generation not yet implemented"
+# Cleanup (updated)
+clean: ## Clean build artifacts
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name "*.egg-info" -exec rm -rf {} +
+	rm -rf packages/*/dist/
+	rm -rf packages/*/build/
+	rm -rf htmlcov/
+	rm -rf .coverage
+	rm -rf .pytest_cache/
+	rm -f uv.lock.tmp
 
+# Development setup with UV
 setup-dev: ## Set up development environment with UV
-	uv venv --python 3.12
-	@echo "Virtual environment created with UV"
-	@echo "Dependencies managed automatically with 'make install-dev'"
+	uv sync --all-extras
+	@echo "Development environment ready!"
+	@echo "Dependencies synchronized via UV lock file"
 
 check: lint test ## Run all checks (lint + test)
 
+# Profiling (updated)
 profile-pyspy:
 	@echo "Running py-spy..."
 	uv run python -m qdrant_loader.cli.cli ingest --source-type=localfile & \
@@ -92,5 +100,5 @@ profile-cprofile:
 	uv run snakeviz profile.out
 
 metrics:
-	@echo "Starting Prometheus metrics endpoint (to be implemented)"
-	# TODO: Implement metrics endpoint and start it here 
+	@echo "Starting Prometheus metrics endpoint"
+	uv run python -m qdrant_loader.metrics

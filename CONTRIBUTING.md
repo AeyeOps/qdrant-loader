@@ -17,7 +17,7 @@ Thank you for your interest in contributing to QDrant Loader! This guide will he
 
 - **Python 3.12+** (latest stable version recommended)
 - **Git** for version control
-- **Virtual environment** (venv, conda, or similar)
+- **UV package manager** (faster alternative to pip)
 - **QDrant instance** (local or cloud) for testing
 
 ### Development Setup
@@ -30,20 +30,19 @@ Thank you for your interest in contributing to QDrant Loader! This guide will he
    cd qdrant-loader
    ```
 
-2. **Create Virtual Environment**
+2. **Install UV Package Manager**
 
    ```bash
-   # Create and activate virtual environment
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   # Install UV (10-100x faster than pip)
+   curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/Mac
+   # Or on Windows: winget install ezwinports.make
    ```
 
 3. **Install in Development Mode**
 
    ```bash
-   # Install both packages with development dependencies
-   pip install -e packages/qdrant-loader[dev]
-   pip install -e packages/qdrant-loader-mcp-server[dev]
+   # Install all packages with development dependencies
+   uv sync --all-extras --all-packages
    ```
 
 4. **Verify Installation**

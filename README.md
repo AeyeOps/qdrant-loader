@@ -59,12 +59,16 @@ Model Context Protocol server providing search capabilities to AI development to
 ### Installation
 
 ```bash
+# Install UV package manager (if not present)
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/Mac
+# Or on Windows: winget install ezwinports.make
+
 # Install both packages
-pip install qdrant-loader qdrant-loader-mcp-server
+uv pip install qdrant-loader qdrant-loader-mcp-server
 
 # Or install individually
-pip install qdrant-loader          # Data ingestion only
-pip install qdrant-loader-mcp-server  # MCP server only
+uv pip install qdrant-loader          # Data ingestion only
+uv pip install qdrant-loader-mcp-server  # MCP server only
 ```
 
 ### 5-Minute Setup
@@ -187,12 +191,12 @@ We welcome contributions! See our [Contributing Guide](./CONTRIBUTING.md) for:
 # Clone and setup
 git clone https://github.com/martin-papy/qdrant-loader.git
 cd qdrant-loader
-python -m venv venv
-source venv/bin/activate
+# Install UV and sync dependencies
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/Mac
+# Or on Windows: winget install ezwinports.make
 
 # Install packages in development mode
-pip install -e "packages/qdrant-loader[dev]"
-pip install -e "packages/qdrant-loader-mcp-server[dev]"
+uv sync --all-extras --all-packages
 ```
 
 ## 📄 License

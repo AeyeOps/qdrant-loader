@@ -2,31 +2,65 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Development Commands
+## Package Manager
 
-### Package Management
-- **Install for development**: `make install-dev` - Installs both packages with dev dependencies
-- **Install packages only**: `make install` - Basic installation without dev dependencies
+**This project uses UV** - a fast Rust-based Python package manager (10-100x faster than pip).
+- **Lock file**: `uv.lock` tracks all dependencies with exact versions
+- **Workspace**: Both packages managed as workspace members in root `pyproject.toml`
+- **No pip/conda needed**: UV handles everything including virtual environments
 
-### Testing
-- **Run all tests**: `make test` or `pytest packages/`
-- **Test core package only**: `make test-loader` or `pytest packages/qdrant-loader/tests/`
-- **Test MCP server only**: `make test-mcp` or `pytest packages/qdrant-loader-mcp-server/tests/`
-- **Test with coverage**: `make test-coverage`
+### UV Quick Reference
+```bash
+# Install UV (if not present)
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/Mac
+winget install ezwinports.make                    # Windows
 
-### Code Quality
-- **Lint code**: `make lint` - Runs ruff and mypy
-- **Format code**: `make format` - Runs black, isort, and ruff --fix
-- **All checks**: `make check` - Runs lint + test
+# Essential commands
+uv sync                        # Install base dependencies
+uv sync --all-extras --all-packages  # Install with dev dependencies
+uv lock                        # Update lock file after dependency changes
+uv run <command>              # Run any command in UV environment
+uv run pytest                 # Run tests
+uv run qdrant-loader          # Run CLI tools
+```
 
-### Building
-- **Build both packages**: `make build`
-- **Build core only**: `make build-loader` 
-- **Build MCP server only**: `make build-mcp`
+### Development Commands (via make or UV)
 
-### Utilities
-- **Clean artifacts**: `make clean`
-- **Setup dev environment**: `make setup-dev` (creates venv, requires manual activation)
+**Package Management**
+- `make install-dev` or `uv sync --all-extras --all-packages` - Full dev install
+- `make install` or `uv sync` - Basic installation
+- `make sync` or `uv sync` - Sync from lock file
+
+**Testing** (run from package directory for config.test.yaml)
+- `make test` or `cd packages/qdrant-loader && uv run pytest`
+- `make test-loader` - Test core package only
+- `make test-mcp` - Test MCP server only
+- `make test-coverage` - With coverage report
+
+**Code Quality**
+- `make lint` or `uv run ruff check && uv run mypy`
+- `make format` or `uv run black . && uv run isort .`
+- `make check` - Lint + test
+
+**Building**
+- `make build` or `uv run python -m build`
+- `make build-loader` - Core package only
+- `make build-mcp` - MCP server only
+
+### Known Issues & Fixes
+
+**scipy/gensim incompatibility**
+- gensim 4.3.x incompatible with scipy >=1.13 (triu function moved)
+- Fixed via version constraints in `packages/qdrant-loader/pyproject.toml`
+
+**Windows make command**
+- Install via: `winget install ezwinports.make`
+- Restart shell after installation for PATH update
+- Alternative: Run UV commands directly without make
+
+**Test execution directory**
+- Tests must run from package directory to find `config.test.yaml`
+- Use: `cd packages/qdrant-loader && uv run pytest`
 
 ## Architecture Overview
 
