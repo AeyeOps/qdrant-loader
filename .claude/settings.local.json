@@ -3,7 +3,10 @@
     "allow": [
       "Bash(uv pip show:*)",
       "Bash(uv sync:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(uv run pytest:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__perplexity-advanced-mcp__ask_perplexity"
     ],
     "deny": [],
     "ask": []

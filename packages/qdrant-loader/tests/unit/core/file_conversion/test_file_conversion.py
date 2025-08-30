@@ -33,11 +33,12 @@ class TestFileDetector:
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_file:
             tmp_file.write(b"fake pdf content")
             tmp_file.flush()
+            temp_path = tmp_file.name
 
-            try:
-                assert self.detector.is_supported_for_conversion(tmp_file.name)
-            finally:
-                os.unlink(tmp_file.name)
+        try:
+            assert self.detector.is_supported_for_conversion(temp_path)
+        finally:
+            os.unlink(temp_path)
 
     def test_is_supported_for_conversion_office_docs(self):
         """Test Office document detection."""
@@ -56,12 +57,13 @@ class TestFileDetector:
             ) as tmp_file:
                 tmp_file.write(b"fake content")
                 tmp_file.flush()
+                temp_path = tmp_file.name
 
-                try:
-                    result = self.detector.is_supported_for_conversion(tmp_file.name)
-                    assert result == expected, f"Failed for {filename}"
-                finally:
-                    os.unlink(tmp_file.name)
+            try:
+                result = self.detector.is_supported_for_conversion(temp_path)
+                assert result == expected, f"Failed for {filename}"
+            finally:
+                os.unlink(temp_path)
 
     def test_is_supported_for_conversion_excluded_types(self):
         """Test that excluded file types return False."""
@@ -91,32 +93,34 @@ class TestFileDetector:
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_file:
             tmp_file.write(b"fake pdf content")
             tmp_file.flush()
+            temp_path = tmp_file.name
 
-            try:
-                mime_type, extension = self.detector.detect_file_type(tmp_file.name)
-                assert mime_type == "application/pdf"
-                assert extension == ".pdf"
-            finally:
-                os.unlink(tmp_file.name)
+        try:
+            mime_type, extension = self.detector.detect_file_type(temp_path)
+            assert mime_type == "application/pdf"
+            assert extension == ".pdf"
+        finally:
+            os.unlink(temp_path)
 
     def test_get_file_type_info(self):
         """Test comprehensive file type information."""
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_file:
             tmp_file.write(b"fake pdf content")
             tmp_file.flush()
+            temp_path = tmp_file.name
 
-            try:
-                info = self.detector.get_file_type_info(tmp_file.name)
+        try:
+            info = self.detector.get_file_type_info(temp_path)
 
-                assert info["file_path"] == tmp_file.name
-                assert info["mime_type"] == "application/pdf"
-                assert info["file_extension"] == ".pdf"
-                assert info["file_size"] > 0
-                assert info["is_supported"] is True
-                assert info["normalized_type"] == "pdf"
-                assert info["is_excluded"] is False
-            finally:
-                os.unlink(tmp_file.name)
+            assert info["file_path"] == temp_path
+            assert info["mime_type"] == "application/pdf"
+            assert info["file_extension"] == ".pdf"
+            assert info["file_size"] > 0
+            assert info["is_supported"] is True
+            assert info["normalized_type"] == "pdf"
+            assert info["is_excluded"] is False
+        finally:
+            os.unlink(temp_path)
 
     @patch("mimetypes.guess_type")
     def test_detect_file_type_mime_fallback(self, mock_guess_type):

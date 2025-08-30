@@ -51,23 +51,24 @@ class TestFileConversionIntegration:
                 b"%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
             )
             tmp_file.flush()
+            temp_path = tmp_file.name
 
+        try:
+            # This should work if MarkItDown is properly installed with PDF support
             try:
-                # This should work if MarkItDown is properly installed with PDF support
-                try:
-                    result = self.converter.convert_file(tmp_file.name)
+                result = self.converter.convert_file(temp_path)
 
-                    assert isinstance(result, str)
-                    assert len(result) > 0
+                assert isinstance(result, str)
+                assert len(result) > 0
 
-                except Exception as e:
-                    # If MarkItDown is not available or fails, that's expected in test environment
-                    pytest.skip(
-                        f"MarkItDown conversion failed (expected in test environment): {e}"
-                    )
+            except Exception as e:
+                # If MarkItDown is not available or fails, that's expected in test environment
+                pytest.skip(
+                    f"MarkItDown conversion failed (expected in test environment): {e}"
+                )
 
-            finally:
-                os.unlink(tmp_file.name)
+        finally:
+            os.unlink(temp_path)
 
     def test_file_converter_error_handling(self):
         """Test file converter error handling with invalid files."""
@@ -90,14 +91,15 @@ class TestFileConversionIntegration:
             # Write more than 1KB of data
             tmp_file.write(b"x" * 2048)
             tmp_file.flush()
+            temp_path = tmp_file.name
 
-            try:
-                with pytest.raises(
-                    Exception
-                ):  # Should raise MarkItDownError wrapping FileSizeExceededError
-                    small_converter.convert_file(tmp_file.name)
-            finally:
-                os.unlink(tmp_file.name)
+        try:
+            with pytest.raises(
+                Exception
+            ):  # Should raise MarkItDownError wrapping FileSizeExceededError
+                small_converter.convert_file(temp_path)
+        finally:
+            os.unlink(temp_path)
 
     def test_file_conversion_config_integration(self):
         """Test file conversion configuration integration."""
