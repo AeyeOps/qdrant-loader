@@ -2,12 +2,29 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Package Manager
+## Package Manager - CRITICAL UV RULES
 
-**This project uses UV** - a fast Rust-based Python package manager (10-100x faster than pip).
+**⚠️ THIS PROJECT USES UV - NEVER USE PYTHON OR PYTEST DIRECTLY ⚠️**
+
+### MANDATORY UV USAGE
+```bash
+# ❌ NEVER DO THIS - THESE WILL FAIL:
+python script.py              # WRONG - uses system Python
+pytest tests/                 # WRONG - uses system pytest  
+python -m pytest             # WRONG - still using system Python
+pip install anything         # WRONG - breaks UV environment
+
+# ✅ ALWAYS DO THIS - UV MANAGES EVERYTHING:
+uv run python script.py      # CORRECT - uses UV's Python
+uv run pytest tests/         # CORRECT - uses UV's pytest
+uv run <any-command>         # CORRECT - always prefix with 'uv run'
+```
+
+### Why UV is Required
 - **Lock file**: `uv.lock` tracks all dependencies with exact versions
 - **Workspace**: Both packages managed as workspace members in root `pyproject.toml`
-- **No pip/conda needed**: UV handles everything including virtual environments
+- **Virtual environment**: UV creates and manages `.venv` automatically
+- **Speed**: 10-100x faster than pip (Rust-based)
 
 ### UV Quick Reference
 ```bash
@@ -15,12 +32,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/Mac
 winget install ezwinports.make                    # Windows
 
-# Essential commands
+# Essential commands (ALWAYS use these)
 uv sync                        # Install base dependencies
 uv sync --all-extras --all-packages  # Install with dev dependencies
 uv lock                        # Update lock file after dependency changes
-uv run <command>              # Run any command in UV environment
-uv run pytest                 # Run tests
+uv run pytest                 # Run tests (NEVER just 'pytest')
 uv run qdrant-loader          # Run CLI tools
 ```
 

@@ -58,6 +58,7 @@ class TestFileDetector:
                 tmp_file.write(b"fake content")
                 tmp_file.flush()
                 temp_path = tmp_file.name
+            # File handle closed when context exits
 
             try:
                 result = self.detector.is_supported_for_conversion(temp_path)
@@ -94,6 +95,7 @@ class TestFileDetector:
             tmp_file.write(b"fake pdf content")
             tmp_file.flush()
             temp_path = tmp_file.name
+        # File handle closed when context exits
 
         try:
             mime_type, extension = self.detector.detect_file_type(temp_path)
@@ -108,6 +110,7 @@ class TestFileDetector:
             tmp_file.write(b"fake pdf content")
             tmp_file.flush()
             temp_path = tmp_file.name
+        # File handle closed when context exits
 
         try:
             info = self.detector.get_file_type_info(temp_path)
